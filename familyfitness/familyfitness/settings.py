@@ -25,7 +25,7 @@ SECRET_KEY = 'vt8nz((c*mndbr_#+s8&_71c3q5qm+^2b2+s^t1=bqdan+^4si'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
