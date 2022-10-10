@@ -17,3 +17,7 @@ sudo apt install python3
 sudo apt install python3-pip
 pip install django djangorestframework
 sudo apt install python3-django
+
+# stores git password
+git config --global credential.helper store
+# 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
