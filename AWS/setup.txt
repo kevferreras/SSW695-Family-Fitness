@@ -1,0 +1,19 @@
+#install docker
+sudo apt install docker.io
+sudo snap install docker
+docker --version
+
+# enables docker commands to run without the use of "sudo"
+sudo groupadd docker
+sudo usermod -aG docker $USER
+newgrp docker 
+
+
+#clone fam fitness repo
+git clone https://github.com/kevferreras/SSW695-Family-Fitness.git
+
+# install python
+sudo apt install python3
+sudo apt install python3-pip
+pip install django djangorestframework
+sudo apt install python3-django
