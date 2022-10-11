@@ -1,6 +1,6 @@
 import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
-import {ListItem, Avatar, Chip} from '@rneui/themed';
+import {ListItem, Avatar} from '@rneui/themed';
 
 const Home = () => {
   return (
@@ -23,6 +23,7 @@ const Home = () => {
                 {l.tags &&
                   l.tags.map((element, index) => (
                     <View
+                      key={index}
                       style={{
                         borderRadius: 4,
                         backgroundColor: '#2387df',
