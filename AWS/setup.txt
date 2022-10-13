@@ -20,4 +20,10 @@ sudo apt install python3-django
 
 # stores git password
 git config --global credential.helper store
-# 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
+# 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
+
+#install net-tools
+sudo apt install net-tools
+
+#install sqlite3
+sudo apt install sqlite3
