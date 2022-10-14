@@ -13,20 +13,18 @@ const Login = props => {
 
   let login = async () => {
     console.log(userName, password);
-    const response = await logIn();
-    const responseJson = await response.json();
-    console.log(responseJson);
-
-    props.setIsLogin(true);
+    logIn().then(res => {
+      console.log(res.data);
+    });
+    // props.setIsLogin(true);
   };
 
   let registerUser = async () => {
     console.log(userName, password);
-    const response = await logIn();
-    const responseJson = await response.json();
-    console.log(responseJson);
-
-    props.setIsLogin(true);
+    logIn().then(res => {
+      console.log(res.data);
+    });
+    // props.setIsLogin(true);
   };
 
   let changeMode = () => {
