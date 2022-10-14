@@ -20,7 +20,7 @@ sudo apt install python3-django
 
 # stores git password
 git config --global credential.helper store
-# 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
+# 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
 
 #install net-tools
 sudo apt install net-tools
