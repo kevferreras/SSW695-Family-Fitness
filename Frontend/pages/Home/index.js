@@ -2,7 +2,11 @@ import React from 'react';
 import {Text, View, StyleSheet, ScrollView} from 'react-native';
 import {ListItem, Avatar} from '@rneui/themed';
 
-const Home = () => {
+const Home = ({navigation}) => {
+  let redirectFriends = l => {
+    navigation.navigate('Friends', {title: l.name});
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={{paddingBottom: 15}}>
@@ -16,7 +20,9 @@ const Home = () => {
               }
             />
             <ListItem.Content>
-              <ListItem.Title>{l.name}</ListItem.Title>
+              <ListItem.Title onPress={() => redirectFriends(l)}>
+                {l.name}
+              </ListItem.Title>
               <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
               {/* tags */}
               <View style={styles.tagContainer}>
@@ -50,7 +56,14 @@ const list = [
     avatar_url:
       'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
     subtitle: 'Vice President',
-    tags: ['swimming', 'basketball', 'swimming', 'basketball', 'swimming', 'basketball'],
+    tags: [
+      'swimming',
+      'basketball',
+      'swimming',
+      'basketball',
+      'swimming',
+      'basketball',
+    ],
   },
   {
     name: 'Chris Jackson',

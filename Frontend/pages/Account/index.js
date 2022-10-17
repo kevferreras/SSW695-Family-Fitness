@@ -1,28 +1,22 @@
-import React from 'react';
-import {Text, StyleSheet, View, Alert} from 'react-native';
+import React, {useContext} from 'react';
+import {Text, StyleSheet, View} from 'react-native';
 import {Button} from '@rneui/themed';
-import {logout} from '../../utils/api';
+import {useTheme} from '@rneui/themed';
+import {AuthContext} from '../../context/AuthContext';
 
 const Account = props => {
-  const signOut = async () => {
-    try {
-      const response = await logout();
-      const responseJson = await response.json();
-      console.log(responseJson);
-      props.setIsLogin(false);
-    } catch (e) {
-      Alert.alert(JSON.stringify(e));
-    }
-  };
+  const {logout} = useContext(AuthContext);
+  const {theme} = useTheme();
 
   return (
     <View style={styles.wrapper}>
       <View style={styles.midBox}>
         {/* log out button */}
         <Button
+          buttonStyle={{backgroundColor: theme.colors.primary}}
           title="Log out"
           onPress={() => {
-            signOut();
+            logout();
           }}
         />
       </View>
