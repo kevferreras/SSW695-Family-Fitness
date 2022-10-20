@@ -41,84 +41,93 @@ const Login = props => {
   };
 
   const SignIn = (
-    <SafeAreaView style={styles.wrapper}>
-      <View style={styles.form}>
-        <Text style={{fontSize: 30, fontWeight: 'bold'}}>Sign in</Text>
-        <Input
-          placeholder="UserName"
-          value={userName}
-          onChangeText={v => setUserName(v)}
-        />
-        <Input
-          placeholder="Password"
-          value={password}
-          onChangeText={v => setPassword(v)}
-          secureTextEntry={true}
-        />
-        <Button
-          onPress={() => {
-            if (userName === '' || password === '') {
-              Toast.show('Fields can not be empty', {
-                position: Toast.positions.CENTER,
-              });
-              return;
-            }
-            login({username: userName, password});
-          }}
-          title="Submit"
-          buttonStyle={{backgroundColor: theme.colors.primary}}
-        />
-        <Text
-          onPress={() => changeMode()}
-          style={[styles.notice, {color: theme.colors.primary}]}>
-          Don't have an account? Create here.
-        </Text>
-      </View>
-    </SafeAreaView>
+    <View style={styles.form}>
+      <Text style={{fontSize: 30, fontWeight: 'bold'}}>Sign in</Text>
+      <Input
+        placeholder="UserName"
+        value={userName}
+        onChangeText={v => setUserName(v)}
+      />
+      <Input
+        placeholder="Password"
+        value={password}
+        onChangeText={v => setPassword(v)}
+        secureTextEntry={true}
+      />
+      <Button
+        onPress={() => {
+          if (userName === '' || password === '') {
+            Toast.show('Fields can not be empty', {
+              position: Toast.positions.CENTER,
+            });
+            return;
+          }
+          login({username: userName, password});
+        }}
+        title="Submit"
+        buttonStyle={{backgroundColor: theme.colors.primary}}
+      />
+      <Text
+        onPress={() => changeMode()}
+        style={[styles.notice, {color: theme.colors.primary}]}>
+        Don't have an account? Create here.
+      </Text>
+    </View>
   );
 
   const Register = (
+    <View style={styles.form}>
+      <Text style={{fontSize: 30, fontWeight: 'bold'}}>Sign up</Text>
+      <Input
+        placeholder="First Name"
+        value={firstName}
+        onChangeText={v => setFirstName(v)}
+      />
+      <Input
+        placeholder="Last Name"
+        value={lastName}
+        onChangeText={v => setLastName(v)}
+      />
+      <Input
+        placeholder="UserName"
+        value={userName}
+        onChangeText={v => setUserName(v)}
+      />
+      <Input
+        placeholder="Password"
+        value={password}
+        onChangeText={v => setPassword(v)}
+        secureTextEntry={true}
+      />
+      <Button
+        onPress={() => {
+          registerUser();
+        }}
+        title="Create Account"
+        buttonStyle={{backgroundColor: theme.colors.primary}}
+      />
+      <Text
+        onPress={() => changeMode()}
+        style={[styles.notice, {color: theme.colors.primary}]}>
+        Already have an account? Log in here.
+      </Text>
+    </View>
+  );
+  const Component = (
     <SafeAreaView style={styles.wrapper}>
-      <View style={styles.form}>
-        <Text style={{fontSize: 30, fontWeight: 'bold'}}>Sign up</Text>
-        <Input
-          placeholder="First Name"
-          value={firstName}
-          onChangeText={v => setFirstName(v)}
-        />
-        <Input
-          placeholder="Last Name"
-          value={lastName}
-          onChangeText={v => setLastName(v)}
-        />
-        <Input
-          placeholder="UserName"
-          value={userName}
-          onChangeText={v => setUserName(v)}
-        />
-        <Input
-          placeholder="Password"
-          value={password}
-          onChangeText={v => setPassword(v)}
-          secureTextEntry={true}
-        />
-        <Button
-          onPress={() => {
-            registerUser();
-          }}
-          title="Create Account"
-          buttonStyle={{backgroundColor: theme.colors.primary}}
-        />
-        <Text
-          onPress={() => changeMode()}
-          style={[styles.notice, {color: theme.colors.primary}]}>
-          Already have an account? Log in here.
+      <View style={[styles.logoContainer, {borderColor: theme.colors.primary}]}>
+        <Text style={[styles.logoText, {color: theme.colors.primary}]}>
+          Family
+        </Text>
+        <Text style={[styles.logoText, {color: theme.colors.primary}]}>
+          Fitness
         </Text>
       </View>
+      {isRegister ? Register : SignIn}
     </SafeAreaView>
   );
 
-  return isRegister ? Register : SignIn;
+  return Component;
 };
 
 const styles = StyleSheet.create({
@@ -139,6 +148,21 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     textAlign: 'center',
     paddingTop: 15,
+  },
+  logoContainer: {
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
+    borderRadius: 50,
+    borderWidth: 3,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  logoText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 
