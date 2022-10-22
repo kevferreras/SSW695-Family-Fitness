@@ -37,6 +37,8 @@
     "react-test-renderer": "18.1.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
+    "transformIgnorePatterns": ["node_modules/(?!(@react-navigation|@rneui|react-native-root-toast|react-native-vector-icons|react-native-root-siblings|@react-native|react-native|react-native-ratings|react-native-size-matters)/)"]
   }
 }
