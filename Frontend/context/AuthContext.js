@@ -1,6 +1,6 @@
 import React, {createContext, useState, useEffect} from 'react';
-import {Alert, AsyncStorage} from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn, registerUser} from '../utils/api';
 import axios from 'axios';
 

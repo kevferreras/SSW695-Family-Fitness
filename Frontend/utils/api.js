@@ -21,3 +21,9 @@ export const registerUser = params => {
 export const logout = params => {
   return _post(`${PREFIX}/api/auth/logout/`);
 };
+
+export const getGeo = latlng => {
+  return _get(
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=AIzaSyDlwb3SvLX5B9OoBQWwQx_ckSWP6zzQxuQ`,
+  );
+};
