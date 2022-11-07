@@ -1,7 +1,7 @@
 # Create your tests here.
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
-from .views import CreateUserAPIView
+from api.views import CreateUserAPIView
 import os
 
 class CreateUserAPIViewTest(TestCase):
