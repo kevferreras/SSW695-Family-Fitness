@@ -42,7 +42,7 @@ class Photo(models.Model):
 
 class Tags(models.Model):
     name = models.CharField('Tags',max_length=30)
-    tags_accout = models.ManyToManyField(Account)
+    tags_account = models.ManyToManyField(Account)
     tag_description = models.TextField()
 
     def __str__(self):
