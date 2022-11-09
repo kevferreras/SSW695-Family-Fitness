@@ -101,6 +101,98 @@ class AccountModelTest(TestCase):
         last_seen = getattr(account, 'last_seen')
         self.assertEqual(last_seen, datetime.datetime(2022, 11, 7, 5, 55, tzinfo= UTC))
 
+class PostModelTest(TestCase):
+    def setUpTestData():
+        Post.objects.create(name = 'Running 5K', post = 'Running my 1st 5K today', post_date = '2022-11-07 05:55', post_likes = 3)
+
+    def test_post_name_label(self):
+        post = Post.objects.get(id=1)
+        field_label = post._meta.get_field('name').verbose_name
+        self.assertEqual(field_label, 'name')        
+
+    def test_post_name_max_length(self):
+        post = Post.objects.get(id=1)
+        max_length = post._meta.get_field('name').max_length
+        self.assertEqual(max_length, 30)
+
+    def test_post_name_value(self):
+        post = Post.objects.get(id=1)
+        name = getattr(post, 'name')
+        self.assertEqual(name, 'Running 5K')
+
+    def test_post_label(self):
+        post = Post.objects.get(id=1)
+        field_label = post._meta.get_field('post').verbose_name
+        self.assertEqual(field_label, 'post')
+
+    def test_post_date_label(self):
+        date = Post.objects.get(id=1)
+        field_label = date._meta.get_field('post_date').verbose_name
+        self.assertEqual(field_label, 'post date')
+
+    def test_post_likes_label(self):
+        like = Post.objects.get(id=1)
+        field_label = like._meta.get_field('post_likes').verbose_name
+        self.assertEqual(field_label, 'post likes')
+
+    def test_post_value(self):
+        post = Post.objects.get(id=1)
+        post_name = getattr(post, 'name')
+        self.assertEqual(post_name, 'Running 5K')
+
+    def test_post_name_value(self):
+        post = Post.objects.get(id=1)
+        post_name = getattr(post, 'post_name')
+        self.assertEqual(post_name, 'Running my 1st 5K today')
+
+    def test_post_date_value(self):
+        post = Post.objects.get(id=1)
+        post_date = getattr(post, 'post_date')
+        self.assertEqual(post_date, datetime.datetime(2022, 11, 7, 5, 55, tzinfo= UTC))    
+
+    def test_post_likes_value(self):
+        post = Post.objects.get(id=1)
+        post_likes = getattr(post, 'post_likes')
+        self.assertEqual(post_likes, 3)
+
+class CommentModelTest(TestCase):
+    def setUpTestData():
+        Comment.objects.create(name = 'Great work', comment = 'Love your progress')
+
+    def test_comment_name_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('name').verbose_name
+        self.assertEqual(field_label, 'Comment')   
+
+    def test_comment_label(self):
+        comment = Comment.objects.get(id=1)
+        field_label = comment._meta.get_field('comment').verbose_name
+        self.assertEqual(field_label, 'Comment')   
+
+    def test_comment_name_value(self):
+        comment = Comment.objects.get(id=1)
+        comment_name = getattr(comment, 'comment_name')
+        self.assertEqual(comment_name, 'Great work')
+
+    def test_comment_value(self):
+        comment = Comment.objects.get(id=1)
+        field_label = getattr(comment, 'comment')
+        self.assertEqual(field_label, 'Love your progress')
+
+class PhotoModelTest(TestCase):
+    def setUpTestData():
+        Photo.objects.create(name = 'Running')
+
+    def test_photo_name_label(self):
+        photo = Photo.objects.get(id=1)
+        field_label = photo._meta.get_field('name').verbose_name
+        self.assertEqual(field_label, 'name')
+
+    def test_photo_name_value(self):
+        photo = Photo.objects.get(id=1)
+        photo_name = getattr(photo, 'name')
+        self.assertEqual(photo_name, 'Running')
+    
 
 class TagsModelTest(TestCase):
     def setUpTestData():
@@ -168,9 +260,9 @@ class GroupsModelTest(TestCase):
 
     '''Models to be tested:
     Account - Kevin F - DONE
-    Post - Harsh
-    Comment - Harsh
-    Photo - Harsh
+    Post - Harsh - DONE
+    Comment - Harsh - DONE
+    Photo - Harsh - DONE
     Tags - Kevin F - DONE
     Workouts - Harsh
     Groups - Kevin F - DONE
