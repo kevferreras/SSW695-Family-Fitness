@@ -108,7 +108,7 @@ class PostModelTest(TestCase):
     def test_post_name_label(self):
         post = Post.objects.get(id=1)
         field_label = post._meta.get_field('name').verbose_name
-        self.assertEqual(field_label, 'name')        
+        self.assertEqual(field_label, 'Post')        
 
     def test_post_name_max_length(self):
         post = Post.objects.get(id=1)
@@ -137,12 +137,7 @@ class PostModelTest(TestCase):
 
     def test_post_value(self):
         post = Post.objects.get(id=1)
-        post_name = getattr(post, 'name')
-        self.assertEqual(post_name, 'Running 5K')
-
-    def test_post_name_value(self):
-        post = Post.objects.get(id=1)
-        post_name = getattr(post, 'post_name')
+        post_name = getattr(post, 'post')
         self.assertEqual(post_name, 'Running my 1st 5K today')
 
     def test_post_date_value(self):
@@ -167,11 +162,11 @@ class CommentModelTest(TestCase):
     def test_comment_label(self):
         comment = Comment.objects.get(id=1)
         field_label = comment._meta.get_field('comment').verbose_name
-        self.assertEqual(field_label, 'Comment')   
+        self.assertEqual(field_label, 'comment')   
 
     def test_comment_name_value(self):
         comment = Comment.objects.get(id=1)
-        comment_name = getattr(comment, 'comment_name')
+        comment_name = getattr(comment, 'name')
         self.assertEqual(comment_name, 'Great work')
 
     def test_comment_value(self):
@@ -186,7 +181,7 @@ class PhotoModelTest(TestCase):
     def test_photo_name_label(self):
         photo = Photo.objects.get(id=1)
         field_label = photo._meta.get_field('name').verbose_name
-        self.assertEqual(field_label, 'name')
+        self.assertEqual(field_label, 'Photo')
 
     def test_photo_name_value(self):
         photo = Photo.objects.get(id=1)
