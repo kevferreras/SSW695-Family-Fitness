@@ -53,12 +53,12 @@ class WorkOuts(models.Model):
     name = models.CharField('WorkOuts',max_length=30)
     workout_type = models.CharField(max_length=30)
     workout_category = models.CharField(max_length=30)
-    workout_intensity = models.IntegerField()
-    workout_duration = models.DurationField()
-    start_time = models.DateTimeField() # YYYY-MM-DD HH:MM
-    end_time = models.DateTimeField() # YYYY-MM-DD HH:MM
-    total_distance = models.IntegerField()
-    gps_coordinates = models.CharField(max_length=30)
+    workout_intensity = models.IntegerField(null=True, blank=True)
+    workout_duration = models.DurationField(null=True, blank=True)
+    start_time = models.DateTimeField(null=True, blank=True) # YYYY-MM-DD HH:MM
+    end_time = models.DateTimeField(null=True, blank=True) # YYYY-MM-DD HH:MM
+    total_distance = models.IntegerField(null=True, blank=True)
+    gps_coordinates = models.CharField(max_length=30, null=True, blank=True)
     workout_account = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     workout_tags = models.ManyToManyField(Tags)
 
