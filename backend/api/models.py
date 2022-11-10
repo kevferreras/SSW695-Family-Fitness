@@ -7,8 +7,8 @@ class Account(models.Model):
     email = models.EmailField(max_length = 254)
     user_name = models.CharField(max_length = 30)
     password = models.CharField(max_length = 30)
-    last_seen = models.DateTimeField() # YYYY-MM-DD HH:MM
-    avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None)
+    last_seen = models.DateTimeField(null=True, blank=True) # YYYY-MM-DD HH:MM
+    avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None, null=True, blank=True)
     
     def __str__(self):
         return self.first_name + " " + self.last_name
