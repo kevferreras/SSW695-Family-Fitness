@@ -4,11 +4,11 @@ from django.db import models
 class Account(models.Model):
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 30)
-    email = models.EmailField(max_length = 254)
+    email = models.EmailField(max_length = 254, null=True, blank=True)
     user_name = models.CharField(max_length = 30)
     password = models.CharField(max_length = 30)
     last_seen = models.DateTimeField(null=True, blank=True) # YYYY-MM-DD HH:MM
-    avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None, null=True, blank=True)
+    avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None,null=True, blank=True)
     
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -20,6 +20,7 @@ class Post(models.Model):
     post_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None)
     post_date = models.DateTimeField() # YYYY-MM-DD HH:MM
     post_likes = models.IntegerField()
+    
     # def __str__(self):
     #     return self.name
 
