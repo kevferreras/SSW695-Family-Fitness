@@ -9,7 +9,7 @@ class Account(models.Model):
     password = models.CharField(max_length = 30)
     last_seen = models.DateTimeField(null=True, blank=True) # YYYY-MM-DD HH:MM
     avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None,null=True, blank=True)
-    
+    workout_preferences = models.TextField(max_length=200, null=True, blank=True)
     def __str__(self):
         return self.first_name + " " + self.last_name
 
