@@ -7,8 +7,8 @@ class Account(models.Model):
     email = models.EmailField(max_length = 254)
     user_name = models.CharField(max_length = 30)
     password = models.CharField(max_length = 30)
-    last_seen = models.DateTimeField() # YYYY-MM-DD HH:MM
-    avatar_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None)
+    last_seen = models.DateTimeField(blank = True) # YYYY-MM-DD HH:MM
+    avatar_img = models.ImageField(blank = True, upload_to="", storage = None, width_field=None, height_field=None)
     
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -43,7 +43,7 @@ class Photo(models.Model):
 class Tags(models.Model):
     name = models.CharField('Tags',max_length=30)
     tags_accout = models.ManyToManyField(Account)
-    tag_description = models.TextField()
+    tag_description = models.TextField(blank = True)
 
     def __str__(self):
         return self.name
@@ -51,13 +51,13 @@ class Tags(models.Model):
 class WorkOuts(models.Model):
     name = models.CharField('WorkOuts',max_length=30)
     workout_type = models.CharField(max_length=30)
-    workout_category = models.CharField(max_length=30)
-    workout_intensity = models.IntegerField()
+    workout_category = models.CharField(max_length=30,blank = True)
+    workout_intensity = models.IntegerField(blank = True)
     workout_duration = models.DurationField()
-    start_time = models.DateTimeField() # YYYY-MM-DD HH:MM
-    end_time = models.DateTimeField() # YYYY-MM-DD HH:MM
-    total_distance = models.IntegerField()
-    gps_coordinates = models.CharField(max_length=30)
+    start_time = models.DateTimeField(blank = True) # YYYY-MM-DD HH:MM
+    end_time = models.DateTimeField(blank = True) # YYYY-MM-DD HH:MM
+    total_distance = models.IntegerField(blank = True)
+    gps_coordinates = models.CharField(max_length=30,blank = True)
     workout_account = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     workout_tags = models.ManyToManyField(Tags)
 
@@ -67,7 +67,7 @@ class WorkOuts(models.Model):
 class Groups(models.Model):
     name = models.CharField('Groups',max_length=30)
     member = models.ManyToManyField(Account)
-    group_description = models.TextField()
+    group_description = models.TextField(blank = True)
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     group_tags = models.ManyToManyField(Tags)
 

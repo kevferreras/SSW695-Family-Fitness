@@ -1,5 +1,16 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from .models import Account, Post, Comment, Photo, Tags, WorkOuts
+
+class WorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkOuts
+        fields = ['workout_account_id',
+                    'name', 
+                    'workout_type', 
+                    'workout_duration', 
+                    'total_distance',
+                    'gps_coordinates']
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
