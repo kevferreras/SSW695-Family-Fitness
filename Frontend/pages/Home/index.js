@@ -11,6 +11,9 @@ const Home = ({navigation}) => {
   let redirectFriends = l => {
     navigation.navigate('Friends', {title: l.name});
   };
+  let redirectMap = l => {
+    navigation.navigate('Map');
+  };
   let search = word => {
     setSearchWord(word);
   };
@@ -61,7 +64,9 @@ const Home = ({navigation}) => {
                     }
                   />
                   <View style={{paddingLeft: 5, paddingRight: 5}}>
-                    <Text>Workout Type: Running, Lifting</Text>
+                    <Text onPress={() => redirectMap()}>
+                      Workout Type: Running, Lifting
+                    </Text>
                     <Text>Workout duration: In progress</Text>
                   </View>
                 </View>

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const key1 = 'AIzaSyDlwb3SvLX5B9OoBQWwQx';
-const keys2 = 'ckSWP6zzQxuQ';
+const key2 = 'ckSWP6zzQxuQ';
 const _get = (url, params) => {
   return axios.get(url, params);
 };
