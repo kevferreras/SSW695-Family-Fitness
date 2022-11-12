@@ -4,7 +4,7 @@ from django.db import models
 class Account(models.Model):
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 30)
-    email = models.EmailField(max_length = 254)
+    email = models.EmailField(max_length = 254, null=True, blank=True)
     user_name = models.CharField(max_length = 30)
     password = models.CharField(max_length = 30)
     last_seen = models.DateTimeField(blank = True) # YYYY-MM-DD HH:MM
@@ -20,6 +20,7 @@ class Post(models.Model):
     post_img = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None)
     post_date = models.DateTimeField() # YYYY-MM-DD HH:MM
     post_likes = models.IntegerField()
+    
     # def __str__(self):
     #     return self.name
 
@@ -43,7 +44,7 @@ class Photo(models.Model):
 class Tags(models.Model):
     name = models.CharField('Tags',max_length=30)
     tags_accout = models.ManyToManyField(Account)
-    tag_description = models.TextField(blank = True)
+    tag_description = models.TextField()
 
     def __str__(self):
         return self.name

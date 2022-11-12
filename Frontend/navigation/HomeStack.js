@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Friends from '../pages/Friends';
 import Home from '../pages/Home';
+import Map from '../pages/Map';
+
 // main home component
 const HomeStack = createNativeStackNavigator();
 
@@ -15,6 +17,13 @@ const HomeStackScreen = () => {
         component={Friends}
         options={({route}) => ({
           title: route.params?.title,
+        })}
+      />
+      <HomeStack.Screen
+        name="Map"
+        component={Map}
+        options={({route}) => ({
+          // title: route.params?.title,
         })}
       />
     </HomeStack.Navigator>

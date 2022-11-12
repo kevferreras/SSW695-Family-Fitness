@@ -1,6 +1,6 @@
 import React, {createContext, useState, useEffect} from 'react';
-import {Alert, AsyncStorage} from 'react-native';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {logIn, registerUser} from '../utils/api';
 import axios from 'axios';
 
@@ -39,6 +39,7 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       })
       .catch(err => {
+        console.log('err', err);
         setIsLoading(false);
         Alert.alert(JSON.stringify(err));
       });
