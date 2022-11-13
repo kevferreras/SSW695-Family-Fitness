@@ -43,7 +43,7 @@ class Photo(models.Model):
 
 class Tags(models.Model):
     name = models.CharField('Tags',max_length=30)
-    tags_account = models.ManyToManyField(Account)
+    tags_accout = models.ManyToManyField(Account)
     tag_description = models.TextField()
 
     def __str__(self):
@@ -68,7 +68,7 @@ class WorkOuts(models.Model):
 class Groups(models.Model):
     name = models.CharField('Groups',max_length=30)
     member = models.ManyToManyField(Account)
-    group_description = models.TextField()
+    group_description = models.TextField(blank = True)
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     group_tags = models.ManyToManyField(Tags)
 

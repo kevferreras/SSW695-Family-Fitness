@@ -1,7 +1,7 @@
 
-from django.urls import include, re_path
+from django.urls import include, re_path, path
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CreateUserAPIView, LogoutUserAPIView
+from .views import CreateUserAPIView, LogoutUserAPIView, GetAllFeedsView
 
 
 urlpatterns = [
@@ -13,5 +13,9 @@ urlpatterns = [
         name='auth_user_create'),
     re_path(r'^auth/logout/$',
         LogoutUserAPIView.as_view(),
-        name='auth_user_logout')
+        name='auth_user_logout'),
+    # re_path(r'^home/show_all/$',
+    #     GetAllFeedsView.as_view(),
+    #     name='home_show_all')
+    path('allUserFeeds', GetAllFeedsView.get_workout_list)
 ]
