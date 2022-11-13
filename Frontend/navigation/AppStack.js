@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {ThemeProvider, Button, createTheme} from '@rneui/themed';
 import HomeStackScreen from './HomeStack';
+import AddRecordStackScreen from './AddRecordStack';
 import {TouchableOpacity, View, Image, StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();
@@ -73,7 +74,7 @@ const app = () => {
         <Tab.Screen name="Group" component={Group} />
         <Tab.Screen
           name="AddRecord"
-          component={AddRecord}
+          component={AddRecordStackScreen}
           options={{
             tabBarIcon: ({focused}) => (
               <Image

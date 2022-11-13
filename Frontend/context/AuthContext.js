@@ -39,6 +39,7 @@ export const AuthProvider = ({children}) => {
         setIsLoading(false);
       })
       .catch(err => {
+        console.log('err', err);
         setIsLoading(false);
         Alert.alert(JSON.stringify(err));
       });

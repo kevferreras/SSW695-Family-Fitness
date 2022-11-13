@@ -12,12 +12,24 @@ import {getGeo} from '../../utils/api';
 import {Icon, Button} from '@rneui/themed';
 import RNPickerSelect from 'react-native-picker-select';
 
-const AddGroup = () => {
+const AddRecord = ({navigation}) => {
   const [location, setLocation] = useState([]);
   const [address, setAddress] = useState('');
+  const [timer, setTimer] = useState(null);
+  let redirectMap = l => {
+    navigation.navigate('Map');
+  };
 
+  // request location every 5 seconds
   useEffect(() => {
-    checkPermission();
+    clearInterval(timer);
+    setTimer(
+      setInterval(() => {
+        console.log('timer');
+        checkPermission();
+      }, 5000),
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -119,7 +131,7 @@ const AddGroup = () => {
         />
       </View>
       {/* start exercise */}
-      <Button title="Start" />
+      <Button title="Start" onPress={() => redirectMap()} />
     </View>
   );
 };
@@ -157,4 +169,4 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-export default AddGroup;
+export default AddRecord;
