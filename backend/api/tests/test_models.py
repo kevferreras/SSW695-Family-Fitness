@@ -1,7 +1,6 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from api.models import *
-import os
 import datetime 
 from datetime import timedelta
 from dateutil.tz import UTC
