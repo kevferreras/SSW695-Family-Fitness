@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from api.models import *
-import os
-import datetime
+import datetime 
+from datetime import timedelta
 from dateutil.tz import UTC
 
 class AccountModelTest(TestCase):
@@ -103,12 +103,13 @@ class AccountModelTest(TestCase):
 
 class PostModelTest(TestCase):
     def setUpTestData():
-        Post.objects.create(name = 'Running 5K', post = 'Running my 1st 5K today', post_date = '2022-11-07 05:55', post_likes = 3)
+        Post.objects.create(name = 'Running 5K', post = 'Running my 1st 5K today', 
+                            post_date = '2022-11-07 05:55', post_likes = 3)
 
     def test_post_name_label(self):
         post = Post.objects.get(id=1)
         field_label = post._meta.get_field('name').verbose_name
-        self.assertEqual(field_label, 'Post')        
+        self.assertEqual(field_label, 'Post')
 
     def test_post_name_max_length(self):
         post = Post.objects.get(id=1)
@@ -134,6 +135,11 @@ class PostModelTest(TestCase):
         like = Post.objects.get(id=1)
         field_label = like._meta.get_field('post_likes').verbose_name
         self.assertEqual(field_label, 'post likes')
+
+    def test_post_name_value(self):
+        post = Post.objects.get(id=1)
+        post_name = getattr(post, 'name')
+        self.assertEqual(post_name, 'Running 5K')
 
     def test_post_value(self):
         post = Post.objects.get(id=1)
@@ -219,6 +225,106 @@ class TagsModelTest(TestCase):
         tag_description = getattr(tag, 'tag_description')
         self.assertEqual(tag_description, 'High Intensity Interval Training')
 
+class WorkoutsModelTest(TestCase):
+    def setUpTestData():
+        WorkOuts.objects.create(name = 'Running 5K', workout_type = 'Running', workout_category = 'Run', 
+                                workout_intensity = 2, workout_duration = timedelta(days = 1) , start_time = '2022-11-07 05:00', 
+                                end_time = '2022-11-07 05:30', total_distance = 5)
+
+    def test_workouts_name_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('name').verbose_name
+        self.assertEqual(field_label, 'WorkOuts')
+
+    def test_workouts_name_max_length(self):
+        workouts = WorkOuts.objects.get(id=1)
+        max_length = workouts._meta.get_field('name').max_length
+        self.assertEqual(max_length, 30)
+
+    def test_workouts_name_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'name')
+        self.assertEqual(name, 'Running 5K')
+
+    def test_workout_type_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('workout_type').verbose_name
+        self.assertEqual(field_label, 'workout type')
+
+    def test_workout_type_max_length(self):
+        workouts = WorkOuts.objects.get(id=1)
+        max_length = workouts._meta.get_field('workout_type').max_length
+        self.assertEqual(max_length, 30)    
+
+    def test_workout_type_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'workout_type')
+        self.assertEqual(name, 'Running')
+
+    def test_workout_category_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('workout_category').verbose_name
+        self.assertEqual(field_label, 'workout category')
+
+    def test_workout_category_max_length(self):
+        workouts = WorkOuts.objects.get(id=1)
+        max_length = workouts._meta.get_field('workout_category').max_length
+        self.assertEqual(max_length, 30)   
+
+    def test_workout_category_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'workout_category')
+        self.assertEqual(name, 'Run')
+    
+    def test_workout_intensity_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('workout_intensity').verbose_name
+        self.assertEqual(field_label, 'workout intensity')    
+
+    def test_workout_intensity_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'workout_intensity')
+        self.assertEqual(name, 2)
+
+    def test_workout_duration_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('workout_duration').verbose_name
+        self.assertEqual(field_label, 'workout duration')         
+
+    def test_workout_duration_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'workout_duration')
+        self.assertEqual(name, timedelta(days = 1))
+
+    def test_workout_start_time_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('start_time').verbose_name
+        self.assertEqual(field_label, 'start time')  
+
+    def workout_start_time_value(self):
+        workout = WorkOuts.objects.get(id=1)
+        start_time = getattr(workout, 'start_time')
+        self.assertEqual(start_time, datetime.datetime(2022, 11, 7, 5, 00, tzinfo= UTC))
+
+    def test_workout_end_time_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('end_time').verbose_name
+        self.assertEqual(field_label, 'end time')
+
+    def workout_end_time_value(self):
+        workout = WorkOuts.objects.get(id=1)
+        end_time = getattr(workout, 'end_time')
+        self.assertEqual(end_time, datetime.datetime(2022, 11, 7, 5, 30, tzinfo= UTC))
+
+    def test_total_distance_label(self):
+        workouts = WorkOuts.objects.get(id=1)
+        field_label = workouts._meta.get_field('total_distance').verbose_name
+        self.assertEqual(field_label, 'total distance')
+
+    def test_total_distance_value(self):
+        workouts = WorkOuts.objects.get(id=1)
+        name = getattr(workouts, 'total_distance')
+        self.assertEqual(name, 5)
 
 class GroupsModelTest(TestCase):
     def setUpTestData():
@@ -249,16 +355,3 @@ class GroupsModelTest(TestCase):
         groups = Groups.objects.get(id=1)
         group_description = getattr(groups, 'group_description')
         self.assertEqual(group_description, 'A group for anyone interested in running')
-        
-
-
-
-    '''Models to be tested:
-    Account - Kevin F - DONE
-    Post - Harsh - DONE
-    Comment - Harsh - DONE
-    Photo - Harsh - DONE
-    Tags - Kevin F - DONE
-    Workouts - Harsh
-    Groups - Kevin F - DONE
-    '''

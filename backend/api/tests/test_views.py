@@ -31,12 +31,7 @@ class CreateUserAPIViewTest(TestCase):
         response = self.client.get('/admin/logout/')
         self.assertEqual(response.status_code, 200)
         
-        
-        
-    
-    # def test_view_url_for_auth_login_exist_in_desired_location (self) -> None:
-    #     response = self.client.get('/api/auth/login/')
-    #     self.assertEqual(response.status_code, 200)
+
 
 
 
