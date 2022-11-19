@@ -9,6 +9,28 @@ from rest_framework.authtoken.models import Token
 from rest_framework import status
 from rest_framework.views import APIView
 from api.serializers import CreateUserSerializer
+from rest_framework.decorators import api_view
+
+import json
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
+
+from api.models import Account, Post, Comment, Photo, Tags, WorkOuts
+from api.serializers import WorkoutSerializer
+
+
+class GetAllFeedsView(APIView):
+    permission_classes = [AllowAny,]
+
+    #@api_view(['GET'])
+    def get_workout_list(request, *args, **kwargs):
+        """
+        API endpoint that return random user from database."""
+        queryset = WorkOuts.objects.all()
+        if queryset:
+            #data = queryset.values('workout_account_id','name', 'workout_type', 'workout_duration', 'total_distance','gps_coordinates')
+            data = WorkoutSerializer(queryset, many=True).data
+        return JsonResponse(list(data), safe=False)
 
 
 class CreateUserAPIView(CreateAPIView):
