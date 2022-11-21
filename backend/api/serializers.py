@@ -5,29 +5,55 @@ from .models import Account, Post, Comment, Photo, Tags, WorkOuts
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkOuts
-        fields = ['workout_account_id',
-                    'name', 
+        fields = ['name', 
                     'workout_type', 
                     'workout_duration', 
                     'total_distance',
                     'gps_coordinates']
 
-class CreateWorkoutSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WorkOuts()
-        fields = ['workout_account_id',
-            'name', 
-            'workout_type', 
-            'workout_duration', 
-            'total_distance',
-            'gps_coordinates']
+    def create(self, validated_data):
+        return WorkOuts.objects.create()
+
+######################################
+# class TodoSerializer(serializers.ModelSerializer):
+#     text = serializers.CharField(max_length=1000, required=True)
+
+#     def create(self, validated_data):
+#         # Once the request data has been validated, we can create a todo item instance in the database
+#         return Todo.objects.create(
+#         text=validated_data.get('text')
+#         )
+
+#     def update(self, instance, validated_data):
+#         # Once the request data has been validated, we can update the todo item instance in the database
+#         instance.text = validated_data.get('text', instance.text)
+#         instance.save()
+#         return instance
+
+#     class Meta:
+#         model = Todo
+#         fields = (
+#         'id',
+#         'text'
+#         )
+############################################
+
+# class CreateWorkoutSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = WorkOuts()
+#         fields = ['workout_account_id',
+#             'name', 
+#             'workout_type', 
+#             'workout_duration', 
+#             'total_distance',
+#             'gps_coordinates']
             
 
-    # def create(self, validated_data):
-    #     user = super(CreateUserSerializer, self).create(validated_data)
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
+#     def create(self, validated_data):
+#         workout = super(CreateWorkoutSerializer, self).create(validated_data)
+#         # workout.set_password(validated_data['password'])
+#         workout.save()
+#         return workout
 
 
 class CreateUserSerializer(serializers.ModelSerializer):
