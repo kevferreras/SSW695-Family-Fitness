@@ -16,7 +16,7 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
 from api.models import Account, Post, Comment, Photo, Tags, WorkOuts
-from api.serializers import WorkoutSerializer
+from api.serializers import WorkoutSerializer, CreateWorkoutSerializer
 
 
 class GetAllFeedsView(APIView):
@@ -32,6 +32,21 @@ class GetAllFeedsView(APIView):
             data = WorkoutSerializer(queryset, many=True).data
         return JsonResponse(list(data), safe=False)
 
+class CreateWorkoutAPIView(CreateAPIView):
+    serializer_class = WorkoutSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **jwargs):
+        '''Create a new workout in the db'''
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+                    **serializer.data,
+                    status=status.HTTP_201_CREATED,
+                    headers=headers
+                )
 
 class CreateUserAPIView(CreateAPIView):
     serializer_class = CreateUserSerializer

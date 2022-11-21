@@ -12,6 +12,23 @@ class WorkoutSerializer(serializers.ModelSerializer):
                     'total_distance',
                     'gps_coordinates']
 
+class CreateWorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkOuts()
+        fields = ['workout_account_id',
+            'name', 
+            'workout_type', 
+            'workout_duration', 
+            'total_distance',
+            'gps_coordinates']
+            
+
+    # def create(self, validated_data):
+    #     user = super(CreateUserSerializer, self).create(validated_data)
+    #     user.set_password(validated_data['password'])
+    #     user.save()
+    #     return user
+
 
 class CreateUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
