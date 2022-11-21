@@ -81,6 +81,10 @@ class WorkOuts(models.Model):
 
     def __str__(self):
         return self.name
+        
+class WorkoutsAdmin(admin.ModelAdmin):
+    list_display = ('name','workout_type','workout_account')
+
 
 class Groups(models.Model):
     name = models.CharField('Groups',max_length=30)
