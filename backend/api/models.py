@@ -83,7 +83,7 @@ class WorkOuts(models.Model):
         return self.name
         
 class WorkoutsAdmin(admin.ModelAdmin):
-    list_display = ('name','workout_type','workout_account')
+    list_display = ('id', 'name','workout_type','workout_account')
 
 
 class Groups(models.Model):
