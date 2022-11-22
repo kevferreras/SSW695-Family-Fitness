@@ -42,7 +42,7 @@ class CreateWorkoutAPIView(CreateAPIView):
 
         if serializer.is_valid(raise_exception=True):
             # If user data is valid, create a new todo item record in the database
-            workout_item_object = self.perform_create(serializer)
+            workout_item_object = serializer.save()
             
             # Serialize the new todo item from a Python object to JSON format
             read_serializer = self.get_serializer(workout_item_object)
