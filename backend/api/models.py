@@ -76,7 +76,7 @@ class WorkOuts(models.Model):
     end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
     total_distance = models.IntegerField(blank = True, null = True)
     gps_coordinates = models.CharField(max_length=30,blank = True, null = True)
-    workout_account = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
+    workout_account = models.ForeignKey(User, blank = True, null=True, on_delete = models.SET_NULL)
     workout_tags = models.ManyToManyField(Tags, blank = True)
 
     def __str__(self):

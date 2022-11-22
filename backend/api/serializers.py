@@ -5,6 +5,8 @@ from .models import Account, Post, Comment, Photo, Tags, WorkOuts
 class WorkoutSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=30, required=True)
     workout_type = serializers.CharField(max_length=30, required=True)
+    # workout_account = serializers.RelatedField(source='user', read_only=True)
+
     # workout_category = models.CharField(max_length=30, blank = True, null = True)
     # workout_intensity = models.IntegerField(blank = True, null = True)
     # workout_duration = models.DurationField(blank = True, null = True)
@@ -12,7 +14,6 @@ class WorkoutSerializer(serializers.ModelSerializer):
     # end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
     # total_distance = models.IntegerField(blank = True, null = True)
     # gps_coordinates = models.CharField(max_length=30,blank = True, null = True)
-    # workout_account = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     # workout_tags = models.ManyToManyField(Tags, blank = True)
     
     class Meta:
@@ -23,10 +24,12 @@ class WorkoutSerializer(serializers.ModelSerializer):
                     'total_distance',
                     'gps_coordinates']
 
-    def create(self, validated_data):
-        return WorkOuts.objects.create(
-            name=validated_data.get('name'),
-            workout_type=validated_data.get('workout_type'))
+    # def create(self, validated_data):
+
+    #     return WorkOuts.objects.create(
+    #         name=validated_data.get('name'),
+    #         workout_type=validated_data.get('workout_type'),
+    #         workout_account=validated_data.get('workout_account'))
 
 ######################################
 # class TodoSerializer(serializers.ModelSerializer):
