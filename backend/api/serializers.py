@@ -3,24 +3,27 @@ from rest_framework import serializers
 from .models import Account, Post, Comment, Photo, Tags, WorkOuts
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(max_length=30, required=True)
-    workout_type = serializers.CharField(max_length=30, required=True)
-    # workout_account = serializers.RelatedField(source='user', read_only=True)
+    # name = serializers.CharField(max_length=30, required=True)
+    # workout_type = serializers.CharField(max_length=30, required=True)
+    # # workout_account = serializers.RelatedField(source='user', read_only=True)
 
-    # workout_category = models.CharField(max_length=30, blank = True, null = True)
-    # workout_intensity = models.IntegerField(blank = True, null = True)
-    # workout_duration = models.DurationField(blank = True, null = True)
-    # start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    # end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    # total_distance = models.IntegerField(blank = True, null = True)
-    # gps_coordinates = models.CharField(max_length=30,blank = True, null = True)
-    # workout_tags = models.ManyToManyField(Tags, blank = True)
+    # # workout_category = models.CharField(max_length=30, blank = True, null = True)
+    # # workout_intensity = models.IntegerField(blank = True, null = True)
+    # # workout_duration = models.DurationField(blank = True, null = True)
+    # # start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    # # end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    # # total_distance = models.IntegerField(blank = True, null = True)
+    # # gps_coordinates = models.CharField(max_length=30,blank = True, null = True)
+    # # workout_tags = models.ManyToManyField(Tags, blank = True)
     
     class Meta:
         model = WorkOuts
         fields = ['name', 
                     'workout_type', 
+                    'workout_intensity',
                     'workout_duration', 
+                    'start_time',
+                    'end_time',
                     'total_distance',
                     'gps_coordinates']
 
