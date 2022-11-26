@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   Text,
   StyleSheet,
@@ -13,25 +13,36 @@ import {Icon, Button} from '@rneui/themed';
 import RNPickerSelect from 'react-native-picker-select';
 
 const AddRecord = ({navigation}) => {
-  const [location, setLocation] = useState([]);
   const [address, setAddress] = useState('');
-  const [timer, setTimer] = useState(null);
+  const [sportsOngoing, setSportsOngoing] = useState(false);
+  const [positions, setPositions] = useState([]);
+  const [intervalId, setIntervalId] = useState(null);
   let redirectMap = l => {
-    navigation.navigate('Map');
+    clearInterval(intervalId);
+    setIntervalId(null);
+    // return;
+    navigation.navigate('Map', {positions});
+    setSportsOngoing(false);
   };
-
-  // request location every 5 seconds
+  const positionFunctRef = useRef(checkPermission);
   useEffect(() => {
-    clearInterval(timer);
-    setTimer(
-      setInterval(() => {
-        console.log('timer');
-        checkPermission();
-      }, 5000),
-    );
-
+    positionFunctRef.current = checkPermission;
+    checkPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  // request location every 5 seconds
+  // useEffect(() => {
+  //   if (!sportsOngoing) {
+  //     return;
+  //   }
+  //   const intervalId = setInterval(() => {
+  //     positionFunctRef.current();
+  //   }, 5000);
+  //   return () => {
+  //     clearInterval(intervalId);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [sportsOngoing]);
 
   let checkPermission = async () => {
     try {
@@ -45,7 +56,7 @@ const AddRecord = ({navigation}) => {
           buttonPositive: 'OK',
         },
       );
-      console.log('granted', granted);
+      // console.log('granted', granted);
       if (granted === 'granted') {
         getLocation();
         // return true;
@@ -65,14 +76,20 @@ const AddRecord = ({navigation}) => {
   let getLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
-        setLocation(position.coords);
+        console.log('position', position);
+        let tmpPositions = [...positions];
+        tmpPositions.push({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        });
+        setPositions(tmpPositions);
         getAddress(position.coords);
       },
       error => {
         // See error code charts below.
         console.log(error.code, error.message);
-        setLocation(false);
       },
       {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
@@ -88,7 +105,6 @@ const AddRecord = ({navigation}) => {
         console.log('err', err);
       });
   };
-
   return (
     <View style={{padding: 20}}>
       <Text style={styles.titleText}>Address</Text>
@@ -131,7 +147,26 @@ const AddRecord = ({navigation}) => {
         />
       </View>
       {/* start exercise */}
-      <Button title="Start" onPress={() => redirectMap()} />
+      {sportsOngoing ? (
+        <Button
+          title="End"
+          onPress={() => {
+            redirectMap();
+          }}
+        />
+      ) : (
+        <Button
+          title="Start"
+          onPress={() => {
+            setPositions([]);
+            const intervalId = setInterval(() => {
+              checkPermission();
+            }, 5000);
+            setIntervalId(intervalId);
+            setSportsOngoing(true);
+          }}
+        />
+      )}
     </View>
   );
 };
