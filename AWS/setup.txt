@@ -27,3 +27,6 @@ sudo apt install net-tools
 
 #install sqlite3
 sudo apt install sqlite3
+
+#run server
+python3 manage.py runserver 0.0.0.0:8000
