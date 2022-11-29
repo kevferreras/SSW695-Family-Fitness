@@ -1,27 +1,35 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useContext} from 'react';
 import {
   Text,
   StyleSheet,
   View,
   PermissionsAndroid,
   Platform,
+  Alert,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Geolocation from 'react-native-geolocation-service';
 import {getGeo} from '../../utils/api';
 import {Icon, Button} from '@rneui/themed';
 import RNPickerSelect from 'react-native-picker-select';
+import {AuthContext} from '../../context/AuthContext';
+import {logworkout} from '../../utils/api';
+import {CoolWPDistance, formatDate} from '../../utils/utils';
 
 const AddRecord = ({navigation}) => {
+  const [sportsType, setSportsType] = useState('');
+  const [startTime, setStartTime] = useState('');
   const [address, setAddress] = useState('');
   const [sportsOngoing, setSportsOngoing] = useState(false);
   const [positions, setPositions] = useState([]);
   const [intervalId, setIntervalId] = useState(null);
+  const {userToken} = useContext(AuthContext);
   let redirectMap = l => {
     clearInterval(intervalId);
     setIntervalId(null);
     // return;
     navigation.navigate('Map', {positions});
+    sendLogWorkOut();
     setSportsOngoing(false);
   };
   const positionFunctRef = useRef(checkPermission);
@@ -43,7 +51,31 @@ const AddRecord = ({navigation}) => {
   //   };
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [sportsOngoing]);
-
+  let sendLogWorkOut = () => {
+    let endTime = new Date();
+    const params = {
+      name: sportsType + 'Workout',
+      workout_type: sportsType,
+      workout_intensity: '1',
+      workout_duration: (endTime.getTime() - startTime.getTime()) / 1000,
+      start_time: formatDate(startTime, 'yyyy-MM-dd hh:mm'),
+      end_time: formatDate(endTime, 'yyyy-MM-dd hh:mm'),
+      total_distance:
+        positions.length < 1
+          ? 0
+          : CoolWPDistance(
+              positions[0].latitude,
+              positions[0].longitude,
+              positions[positions.length - 1].latitude,
+              positions[positions.length - 1].longitude,
+            ),
+      gps_coordinates: JSON.stringify(positions),
+    };
+    console.log('sendLogWorkOut', params);
+    logworkout(params).catch(err => {
+      console.log('logworkoutError', err);
+    });
+  };
   let checkPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -138,7 +170,9 @@ const AddRecord = ({navigation}) => {
               ? pickerSelectStyles.inputIOS
               : pickerSelectStyles.inputAndroid
           }
-          onValueChange={value => console.log(value)}
+          onValueChange={value => {
+            setSportsType(value);
+          }}
           items={[
             {label: 'Football', value: 'football'},
             {label: 'Baseball', value: 'baseball'},
@@ -151,6 +185,9 @@ const AddRecord = ({navigation}) => {
         <Button
           title="End"
           onPress={() => {
+            if (positions.length < 1) {
+              return;
+            }
             redirectMap();
           }}
         />
@@ -158,7 +195,12 @@ const AddRecord = ({navigation}) => {
         <Button
           title="Start"
           onPress={() => {
+            if (sportsType == '') {
+              Alert.alert('select a aport');
+              return;
+            }
             setPositions([]);
+            setStartTime(new Date());
             const intervalId = setInterval(() => {
               checkPermission();
             }, 5000);
