@@ -10,7 +10,7 @@ class Account(models.Model):
     avatar_img = models.ImageField(blank = True, null = True, upload_to="images", storage = None, width_field=None, height_field=None)
     
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.user
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -22,7 +22,7 @@ class Account(models.Model):
         instance.account.save()
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('user','first_name','last_name')
+    list_display = (['user'])
 
 class Post(models.Model):
     name = models.CharField('Post',max_length=30)
