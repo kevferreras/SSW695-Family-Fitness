@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Account, Post, Comment, Photo, WorkOuts
 
 class WorkoutSerializer(serializers.ModelSerializer):
+    class Meta:
         model = WorkOuts
         fields = ['name', 
                     'workout_type', 
