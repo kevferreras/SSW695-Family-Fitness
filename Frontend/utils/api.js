@@ -24,6 +24,14 @@ export const logout = params => {
   return _post(`${PREFIX}/api/auth/logout/`);
 };
 
+export const homePage = userToken => {
+  return _get(`${PREFIX}/api/allUserFeeds`);
+};
+
+export const logworkout = params => {
+  return _post(`${PREFIX}/api/logworkout`);
+};
+
 export const getGeo = latlng => {
   return _get(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key1}_${key2}`,
