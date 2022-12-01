@@ -7,12 +7,6 @@ from django.contrib import admin
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
-    first_name = models.CharField(max_length = 30)
-    last_name = models.CharField(max_length = 30)
-    email = models.EmailField(max_length = 254, null=True, blank=True)
-    user_name = models.CharField(max_length = 30)
-    password = models.CharField(max_length = 30)
-    last_seen = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
     avatar_img = models.ImageField(blank = True, null = True, upload_to="images", storage = None, width_field=None, height_field=None)
     
     def __str__(self):
