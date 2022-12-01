@@ -15,7 +15,7 @@ import json
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
-from api.models import Account, Post, Comment, Photo, Tags, WorkOuts
+from api.models import Account, Post, Comment, Photo, WorkOuts
 from api.serializers import WorkoutSerializer
 
 
