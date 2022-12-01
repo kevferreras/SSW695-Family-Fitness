@@ -12,6 +12,15 @@ class WorkoutSerializer(serializers.ModelSerializer):
                     'total_distance',
                     'gps_coordinates']
 
+<<<<<<< Updated upstream
+=======
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkOuts
+        fields = ['name', 
+                    'member',
+                    'group_description']
+>>>>>>> Stashed changes
 
 class CreateUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()

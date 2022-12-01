@@ -65,10 +65,17 @@ class WorkOuts(models.Model):
     def __str__(self):
         return self.name
 
+<<<<<<< Updated upstream
 class Groups(models.Model):
     name = models.CharField('Groups',max_length=30)
     member = models.ManyToManyField(Account)
     group_description = models.TextField(blank = True)
+=======
+class WorkoutGroups(models.Model):
+    name = models.CharField('Groups',max_length=30) # name of the group
+    member = models.ManyToManyField(User) # Users in the group
+    group_description = models.TextField(blank = True) # description of the group
+>>>>>>> Stashed changes
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     group_tags = models.ManyToManyField(Tags)
 

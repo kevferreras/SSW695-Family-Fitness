@@ -15,8 +15,13 @@ import json
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 
+<<<<<<< Updated upstream
 from api.models import Account, Post, Comment, Photo, Tags, WorkOuts
 from api.serializers import WorkoutSerializer
+=======
+from api.models import Account, Post, Comment, Photo, WorkOuts, WorkoutGroups
+from api.serializers import WorkoutSerializer, GroupSerializer
+>>>>>>> Stashed changes
 
 
 class GetAllFeedsView(APIView):
@@ -32,6 +37,66 @@ class GetAllFeedsView(APIView):
             data = WorkoutSerializer(queryset, many=True).data
         return JsonResponse(list(data), safe=False)
 
+<<<<<<< Updated upstream
+=======
+class CreateWorkoutAPIView(CreateAPIView):
+    serializer_class = WorkoutSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **jwargs):
+        '''Create a new workout in the db'''
+        serializer = self.get_serializer(data=request.data)
+
+        # Utilizes Token to determine user who is sending the POST
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            user = None
+
+        if serializer.is_valid(raise_exception=True):
+            # If user data is valid, create a new todo item record in the database
+            workout_item_object = serializer.save(workout_account=user)
+            
+            # Serialize the new todo item from a Python object to JSON format
+            read_serializer = self.get_serializer(workout_item_object)
+
+            # Return a HTTP response with the newly created todo item data
+            return Response(read_serializer.data, status=201)
+
+        # If the users POST data is not valid, return a 400 response with an error message
+        return Response(serializer.errors, status=400)
+
+    ### TO DO: CREATE NEW GROUP
+    ### TO DO: ADD USER TO EXISTING GROUP
+    ### TO DO: GET LIST OF ALL USERS IN ALL GROUPS
+
+class CreateGroupAPIView(CreateAPIView):
+    serializer_class = GroupSerializer
+    permission_classes = [AllowAny]
+
+    def create(self, request, *args, **jwargs):
+        '''Create a new workout in the db'''
+        serializer = self.get_serializer(data=request.data)
+
+        # Utilizes Token to determine user who is sending the POST
+        if request.user.is_authenticated:
+            user = request.user
+        else:
+            user = None
+
+        if serializer.is_valid(raise_exception=True):
+            # If user data is valid, create a new todo item record in the database
+            group_item_object = serializer.save(member=user)
+            
+            # Serialize the new todo item from a Python object to JSON format
+            read_serializer = self.get_serializer(group_item_object)
+
+            # Return a HTTP response with the newly created todo item data
+            return Response(read_serializer.data, status=201)
+
+        # If the users POST data is not valid, return a 400 response with an error message
+        return Response(serializer.errors, status=400)
+>>>>>>> Stashed changes
 
 class CreateUserAPIView(CreateAPIView):
     serializer_class = CreateUserSerializer
