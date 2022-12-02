@@ -27,3 +27,5 @@ deploy:
   bucket_name: "elasticbeanstalk-us-east-1-810957029479"
   skip_cleanup: true
   run: python3 manage.py migrate
+  on:
+    branch: main
