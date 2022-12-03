@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Polyline} from 'react-native-maps';
 import {useTheme} from '@rneui/themed';
@@ -17,13 +17,17 @@ const chibaRegion = {
 };
 
 const Map = ({navigation, route}) => {
+  useEffect(() => {
+    console.log(route.params.positions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const {theme} = useTheme();
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} initialRegion={tokyoRegion}>
+      <MapView style={styles.map} initialRegion={route.params.positions[0]}>
         <Polyline
-          coordinates={[tokyoRegion, chibaRegion]} //specify our coordinates
+          coordinates={route.params.positions} //specify our coordinates
           strokeColor={theme.colors.primary}
           strokeWidth={3}
         />

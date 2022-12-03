@@ -1,26 +1,18 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Account, Post, Comment, Photo, Tags, WorkOuts
+from .models import Account, Post, Comment, Photo, WorkOuts
 
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkOuts
-        fields = ['workout_account_id',
-                    'name', 
+        fields = ['name', 
                     'workout_type', 
+                    'workout_intensity',
                     'workout_duration', 
+                    'start_time',
+                    'end_time',
                     'total_distance',
                     'gps_coordinates']
-
-<<<<<<< Updated upstream
-=======
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WorkOuts
-        fields = ['name', 
-                    'member',
-                    'group_description']
->>>>>>> Stashed changes
 
 class CreateUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
