@@ -1,17 +1,28 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib import admin
 
 # Create your models here.
 class Account(models.Model):
-    first_name = models.CharField(max_length = 30)
-    last_name = models.CharField(max_length = 30)
-    email = models.EmailField(max_length = 254, null=True, blank=True)
     user_name = models.CharField(max_length = 30)
-    password = models.CharField(max_length = 30)
-    last_seen = models.DateTimeField(blank = True) # YYYY-MM-DD HH:MM
     avatar_img = models.ImageField(blank = True, upload_to="", storage = None, width_field=None, height_field=None)
     
     def __str__(self):
         return self.first_name + " " + self.last_name
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Account.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.account.save()
+
+class AccountAdmin(admin.ModelAdmin):
+    list_display = ('user','first_name','last_name')
 
 class Post(models.Model):
     name = models.CharField('Post',max_length=30)
@@ -65,17 +76,13 @@ class WorkOuts(models.Model):
     def __str__(self):
         return self.name
 
-<<<<<<< Updated upstream
-class Groups(models.Model):
-    name = models.CharField('Groups',max_length=30)
-    member = models.ManyToManyField(Account)
-    group_description = models.TextField(blank = True)
-=======
+    class WorkoutsAdmin(admin.ModelAdmin):
+        list_display = ('id', 'name','workout_type','workout_account')
+
 class WorkoutGroups(models.Model):
     name = models.CharField('Groups',max_length=30) # name of the group
     member = models.ManyToManyField(User) # Users in the group
     group_description = models.TextField(blank = True) # description of the group
->>>>>>> Stashed changes
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     group_tags = models.ManyToManyField(Tags)
 
