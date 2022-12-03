@@ -12,4 +12,4 @@ curl -X POST -d "name=test&workout_type=test" http://ec2-54-161-61-21.compute-1.
 ec2-54-161-61-21.compute-1.amazonaws.com
 
 CreateWorkoutGroup
-curl -X POST -d "name=NewGroup&group_description=This is the group description" http://ec2-54-161-61-21.compute-1.amazonaws.com:8000/api/creategroup -H 'Authorization: Token 9fc96ad55b2f03ca687ab8fbf643ffbcc4b93d5b'
+curl -X POST -d "name=NewGroup&group_description=This is the group description" http://ec2-54-161-61-21.compute-1.amazonaws.com:8000/api/creategroups -H 'Authorization: Token 9fc96ad55b2f03ca687ab8fbf643ffbcc4b93d5b'

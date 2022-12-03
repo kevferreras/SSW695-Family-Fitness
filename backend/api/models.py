@@ -72,7 +72,7 @@ class WorkoutsAdmin(admin.ModelAdmin):
 class WorkoutGroups(models.Model):
     name = models.CharField('Groups',max_length=30) 
     #member = models.ManyToManyField(Account)
-    member = models.ManyToManyField(User)
+    member = models.ManyToManyField(User, blank = True)
     group_description = models.TextField(blank = True)
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     # group_tags = models.ManyToManyField(Tags)
