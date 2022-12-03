@@ -91,7 +91,8 @@ class CreateGroupAPIView(CreateAPIView):
             user = request.user
         else:
             user = None
-
+            # If the user is not valid, return a 400 response with an error message
+            return Response(serializer.errors, status=400)
         if serializer.is_valid(raise_exception=True):
             # If user data is valid, create a new todo item record in the database
             group_list = serializer.save(member=user)
