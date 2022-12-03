@@ -69,12 +69,16 @@ class WorkOuts(models.Model):
 class WorkoutsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','workout_type','workout_account')
 
-class Groups(models.Model):
+class WorkoutGroups(models.Model):
     name = models.CharField('Groups',max_length=30) 
-    member = models.ManyToManyField(Account)
+    #member = models.ManyToManyField(Account)
+    member = models.ManyToManyField(User)
     group_description = models.TextField(blank = True)
     #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
     # group_tags = models.ManyToManyField(Tags)
 
     def __str__(self):
         return self.name
+
+# class WorkoutGroupsAdmin(admin.ModelAdmin):
+#     list_display = ('name','member')

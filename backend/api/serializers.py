@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Account, Post, Comment, Photo, WorkOuts
+from .models import Account, Post, Comment, Photo, WorkOuts, WorkoutGroups
 
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +30,11 @@ class CreateUserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkoutGroups
+        fields = ['name', 
+                    'member',
+                    'group_description'
+                    ]
