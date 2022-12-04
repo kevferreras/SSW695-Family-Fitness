@@ -1,5 +1,17 @@
 import axios from 'axios';
 
+axios.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    // console.log('config', config);
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  },
+);
+
 const key1 = 'AIzaSyDlwb3SvLX5B9OoBQWwQx';
 const key2 = 'ckSWP6zzQxuQ';
 const _get = (url, params) => {
@@ -29,6 +41,10 @@ export const homePage = userToken => {
 };
 
 export const logworkout = params => {
+  console.log(
+    'axios.defaults.headers.common.Authorization',
+    axios.defaults.headers.common.Authorization,
+  );
   return _post(`${PREFIX}/api/logworkout`);
 };
 

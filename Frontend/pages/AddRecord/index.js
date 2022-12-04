@@ -32,25 +32,12 @@ const AddRecord = ({navigation}) => {
     sendLogWorkOut();
     setSportsOngoing(false);
   };
-  const positionFunctRef = useRef(checkPermission);
   useEffect(() => {
-    positionFunctRef.current = checkPermission;
+    checkPermission(true);
     checkPermission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // request location every 5 seconds
-  // useEffect(() => {
-  //   if (!sportsOngoing) {
-  //     return;
-  //   }
-  //   const intervalId = setInterval(() => {
-  //     positionFunctRef.current();
-  //   }, 5000);
-  //   return () => {
-  //     clearInterval(intervalId);
-  //   };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sportsOngoing]);
+
   let sendLogWorkOut = () => {
     let endTime = new Date();
     const params = {
@@ -76,7 +63,7 @@ const AddRecord = ({navigation}) => {
       console.log('logworkoutError', err);
     });
   };
-  let checkPermission = async () => {
+  let checkPermission = async (getCurr = false) => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -90,7 +77,11 @@ const AddRecord = ({navigation}) => {
       );
       // console.log('granted', granted);
       if (granted === 'granted') {
-        getLocation();
+        if (getCurr) {
+          getRealLocation();
+        } else {
+          getLocation();
+        }
         // return true;
       } else {
         Toast.show('Location Service not enabled', {
@@ -104,18 +95,17 @@ const AddRecord = ({navigation}) => {
       });
     }
   };
-
-  let getLocation = () => {
+  let getRealLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        console.log('position', position);
-        let tmpPositions = [...positions];
-        tmpPositions.push({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        });
+        let tmpPositions = [
+          {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+        ];
         setPositions(tmpPositions);
         getAddress(position.coords);
       },
@@ -123,7 +113,40 @@ const AddRecord = ({navigation}) => {
         // See error code charts below.
         console.log(error.code, error.message);
       },
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+      {
+        maximumAge: 0,
+        timeout: 5000,
+        enableHighAccuracy: true,
+        forceLocationManager: true,
+      },
+    );
+  };
+  let getLocation = () => {
+    Geolocation.watchPosition(
+      position => {
+        let tmpPositions = [
+          ...positions,
+          {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+        ];
+        console.log('tmpPositions', tmpPositions);
+        setPositions(tmpPositions);
+        getAddress(position.coords);
+      },
+      error => {
+        // See error code charts below.
+        console.log(error.code, error.message);
+      },
+      {
+        maximumAge: 0,
+        timeout: 5000,
+        enableHighAccuracy: true,
+        forceLocationManager: true,
+      },
     );
   };
 
@@ -149,7 +172,7 @@ const AddRecord = ({navigation}) => {
         <Text>{address}</Text>
         <Icon
           onPress={() => {
-            checkPermission();
+            // checkPermission();
           }}
           type="ionicon"
           name="ios-locate"
@@ -185,9 +208,6 @@ const AddRecord = ({navigation}) => {
         <Button
           title="End"
           onPress={() => {
-            if (positions.length < 1) {
-              return;
-            }
             redirectMap();
           }}
         />
@@ -196,15 +216,17 @@ const AddRecord = ({navigation}) => {
           title="Start"
           onPress={() => {
             if (sportsType == '') {
-              Alert.alert('select a aport');
+              Alert.alert('select a sport');
               return;
             }
-            setPositions([]);
+            if (positions.length > 0) {
+              setPositions([positions[positions.length - 1]]);
+            } else {
+              setPositions([]);
+            }
+            console.log('Afertset', positions);
             setStartTime(new Date());
-            const intervalId = setInterval(() => {
-              checkPermission();
-            }, 5000);
-            setIntervalId(intervalId);
+            checkPermission(true);
             setSportsOngoing(true);
           }}
         />

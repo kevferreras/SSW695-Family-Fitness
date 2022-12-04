@@ -15,7 +15,6 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     homePage(userToken).then(res => {
-      console.log('homepage data, ', res.data);
       setList(res.data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
