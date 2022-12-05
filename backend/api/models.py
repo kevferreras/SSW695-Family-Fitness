@@ -21,6 +21,34 @@ class Account(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.account.save()
 
+
+class WorkOuts(models.Model):
+    name = models.CharField('WorkOut Name',max_length=30) # name / description of workout
+    workout_type = models.CharField(max_length=30) # type of sport (running, football, tennis, etc)
+    workout_intensity = models.IntegerField(blank = True, null = True) # intensity of workout (1-5) 5 is highest
+    workout_duration = models.DurationField(blank = True, null = True) 
+    start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    total_distance = models.IntegerField(blank = True, null = True) # distance in miles
+    gps_coordinates = models.CharField(max_length=1000, blank = True, null = True) # list of gps coordinates
+    workout_account = models.ForeignKey(User, blank = True, null=True, on_delete = models.SET_NULL) # user account
+    
+    def __str__(self):
+        return self.name
+        
+class WorkoutsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name','workout_type','workout_account')
+
+class WorkoutGroups(models.Model):
+    name = models.CharField('Groups',max_length=30, blank = True) 
+    member = models.ManyToManyField(User, blank = True)
+    member = models.ForeignKey(User, blank = True,null=True, on_delete = models.SET_NULL)
+
+    group_description = models.TextField(blank = True)
+
+    def __str__(self):
+        return self.name
+
 class AccountAdmin(admin.ModelAdmin):
     list_display = (['user'])
 
@@ -51,33 +79,3 @@ class Photo(models.Model):
 
     def __str__(self):
         return self.name
-
-class WorkOuts(models.Model):
-    name = models.CharField('WorkOut Name',max_length=30) # name / description of workout
-    workout_type = models.CharField(max_length=30) # type of sport (running, football, tennis, etc)
-    workout_intensity = models.IntegerField(blank = True, null = True) # intensity of workout (1-5) 5 is highest
-    workout_duration = models.DurationField(blank = True, null = True) 
-    start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    total_distance = models.IntegerField(blank = True, null = True) # distance in miles
-    gps_coordinates = models.CharField(max_length=1000, blank = True, null = True) # list of gps coordinates
-    workout_account = models.ForeignKey(User, blank = True, null=True, on_delete = models.SET_NULL) # user account
-    
-    def __str__(self):
-        return self.name
-        
-class WorkoutsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name','workout_type','workout_account')
-
-class WorkoutGroups(models.Model):
-    name = models.CharField('Groups',max_length=30, blank = True) 
-    member = models.ManyToManyField(User, blank = True)
-    member = models.ForeignKey(User, blank = True,null=True, on_delete = models.SET_NULL)
-
-    group_description = models.TextField(blank = True)
-
-    def __str__(self):
-        return self.name
-
-# class WorkoutGroupsAdmin(admin.ModelAdmin):
-#     list_display = ('name','member')
