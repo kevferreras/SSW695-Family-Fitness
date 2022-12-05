@@ -187,29 +187,29 @@ class WorkoutsModelTest(TestCase):
 class GroupsModelTest(TestCase):
     def setUpTestData():
         # Set up non-modified objects used by all test methods
-         Groups.objects.create(name= 'Running Group', group_description='A group for anyone interested in running')
+         WorkoutGroups.objects.create(name= 'Running Group', group_description='A group for anyone interested in running')
          
     def test_groups_name_label(self):
-        groups = Groups.objects.get(id=1)
+        groups = WorkoutGroups.objects.get(id=1)
         field_label = groups._meta.get_field('name').verbose_name
         self.assertEqual(field_label, 'Groups')
 
     def test_groups_name_max_length(self):
-        groups = Groups.objects.get(id=1)
+        groups = WorkoutGroups.objects.get(id=1)
         max_length = groups._meta.get_field('name').max_length
         self.assertEqual(max_length, 30)
         
     def test_groups_name_value(self):
-        groups = Groups.objects.get(id=1)
+        groups = WorkoutGroups.objects.get(id=1)
         name = getattr(groups, 'name')
         self.assertEqual(name, 'Running Group')
 
     def test_groups_description_label(self):
-        groups = Groups.objects.get(id=1)
+        groups = WorkoutGroups.objects.get(id=1)
         field_label = groups._meta.get_field('group_description').verbose_name
         self.assertEqual(field_label, 'group description')
 
     def test_groups_description_value(self):
-        groups = Groups.objects.get(id=1)
+        groups = WorkoutGroups.objects.get(id=1)
         group_description = getattr(groups, 'group_description')
         self.assertEqual(group_description, 'A group for anyone interested in running')
