@@ -12,7 +12,8 @@ class WorkoutSerializer(serializers.ModelSerializer):
                     'start_time',
                     'end_time',
                     'total_distance',
-                    'gps_coordinates']
+                    'gps_coordinates',
+                    'workout_account']
 
 class CreateUserSerializer(serializers.ModelSerializer):
     username = serializers.CharField()
