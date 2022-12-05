@@ -73,6 +73,7 @@ class WorkoutGroups(models.Model):
     name = models.CharField('Groups',max_length=30, blank = True) 
     member = models.ManyToManyField(User, blank = True)
     member = models.ForeignKey(User, blank = True,null=True, on_delete = models.SET_NULL)
+
     group_description = models.TextField(blank = True)
 
     def __str__(self):

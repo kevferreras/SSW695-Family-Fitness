@@ -18,7 +18,7 @@ const chibaRegion = {
 
 const Map = ({navigation, route}) => {
   useEffect(() => {
-    console.log(route.params.positions);
+    console.log('route.params.positions', route.params.positions);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const {theme} = useTheme();

@@ -149,6 +149,7 @@ def group_get_post(request):
 #     return JsonResponse(list(data), safe = False)
 
 
+
 class LogoutUserAPIView(APIView):
     queryset = get_user_model().objects.all()
 
