@@ -48,6 +48,14 @@ export const logworkout = params => {
   return _post(`${PREFIX}/api/logworkout`);
 };
 
+export const createGroup = params => {
+  return _post(`${PREFIX}/api/creategetgroup`, params);
+};
+
+export const getGroupList = () => {
+  return _get(`${PREFIX}/api/creategetgroup`);
+};
+
 export const getGeo = latlng => {
   return _get(
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key1}_${key2}`,

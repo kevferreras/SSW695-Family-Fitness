@@ -1,31 +1,49 @@
-import React, {useState} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Text, StyleSheet, View, Alert, ScrollView} from 'react-native';
 import {ListItem, Button, Dialog, Input} from '@rneui/themed';
+import {createGroup, getGroupList} from '../../utils/api';
+import Toast from 'react-native-root-toast';
 
 const Group = () => {
-  const [list, setList] = useState([
-    {
-      name: 'Running Group',
-      subtitle: 'Enjoy running',
-    },
-    {
-      name: 'Hiking Group',
-      subtitle: 'Enjoy hiking',
-    },
-  ]);
+  const [list, setList] = useState([]);
   const [open, setOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
 
   let saveGroup = () => {
-    setList([...list, {name: groupName, subtitle: groupDescription}]);
-    setGroupName('');
-    setGroupDescription('');
-    setOpen(false);
+    createGroup({
+      name: groupName,
+      group_description: groupDescription,
+    })
+      .then(res => {
+        refreshPage();
+        setGroupName('');
+        setGroupDescription('');
+        setOpen(false);
+      })
+      .catch(err => {
+        Toast.show(JSON.stringify(err), {
+          position: Toast.positions.CENTER,
+        });
+      });
   };
+  let refreshPage = () => {
+    getGroupList()
+      .then(res => {
+        setList(res.data);
+      })
+      .catch(err => {
+        Toast.show(JSON.stringify(err), {
+          position: Toast.positions.CENTER,
+        });
+      });
+  };
+  useEffect(() => {
+    refreshPage();
+  }, []);
 
   return (
-    <View style={styles.groupContainer}>
+    <ScrollView style={styles.groupContainer}>
       <Button
         onPress={() => {
           setOpen(true);
@@ -36,7 +54,8 @@ const Group = () => {
         <ListItem key={i} style={styles.listItem}>
           <ListItem.Content>
             <ListItem.Title>{l.name}</ListItem.Title>
-            <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+            <ListItem.Subtitle>{l.group_description}</ListItem.Subtitle>
+            <ListItem.Subtitle>Number: {l.member}</ListItem.Subtitle>
           </ListItem.Content>
         </ListItem>
       ))}
@@ -65,7 +84,7 @@ const Group = () => {
           Sunbmit
         </Button>
       </Dialog>
-    </View>
+    </ScrollView>
   );
 };
 

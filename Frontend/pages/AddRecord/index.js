@@ -12,7 +12,6 @@ import Geolocation from 'react-native-geolocation-service';
 import {getGeo} from '../../utils/api';
 import {Icon, Button} from '@rneui/themed';
 import RNPickerSelect from 'react-native-picker-select';
-import {AuthContext} from '../../context/AuthContext';
 import {logworkout} from '../../utils/api';
 import {CoolWPDistance, formatDate} from '../../utils/utils';
 
@@ -23,7 +22,6 @@ const AddRecord = ({navigation}) => {
   const [sportsOngoing, setSportsOngoing] = useState(false);
   const [positions, setPositions] = useState([]);
   const [intervalId, setIntervalId] = useState(null);
-  const {userToken} = useContext(AuthContext);
   let redirectMap = l => {
     clearInterval(intervalId);
     setIntervalId(null);
@@ -33,8 +31,8 @@ const AddRecord = ({navigation}) => {
     setSportsOngoing(false);
   };
   useEffect(() => {
-    checkPermission(true);
     checkPermission();
+    checkPermission(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -98,7 +96,7 @@ const AddRecord = ({navigation}) => {
   let getRealLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        let tmpPositions = [
+        const tmpPositions = [
           {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -106,7 +104,15 @@ const AddRecord = ({navigation}) => {
             longitudeDelta: 0.01,
           },
         ];
-        setPositions(tmpPositions);
+        setPositions(() => [
+          {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          },
+        ]);
+        console.log('getRealLocation=>tmpPositions', tmpPositions);
         getAddress(position.coords);
       },
       error => {
@@ -117,24 +123,32 @@ const AddRecord = ({navigation}) => {
         maximumAge: 0,
         timeout: 5000,
         enableHighAccuracy: true,
-        forceLocationManager: true,
       },
     );
   };
   let getLocation = () => {
     Geolocation.watchPosition(
       position => {
-        let tmpPositions = [
-          ...positions,
+        console.log('tmpPositionsBefore, ', positions);
+        // const tmpPositions = [
+        //   ...positions,
+        //   {
+        //     latitude: position.coords.latitude,
+        //     longitude: position.coords.longitude,
+        //     latitudeDelta: 0.01,
+        //     longitudeDelta: 0.01,
+        //   },
+        // ];
+        // console.log('tmpPositions', tmpPositions);
+        setPositions(prevPositions => [
+          ...prevPositions,
           {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           },
-        ];
-        console.log('tmpPositions', tmpPositions);
-        setPositions(tmpPositions);
+        ]);
         getAddress(position.coords);
       },
       error => {
@@ -145,7 +159,6 @@ const AddRecord = ({navigation}) => {
         maximumAge: 0,
         timeout: 5000,
         enableHighAccuracy: true,
-        forceLocationManager: true,
       },
     );
   };
@@ -219,12 +232,6 @@ const AddRecord = ({navigation}) => {
               Alert.alert('select a sport');
               return;
             }
-            if (positions.length > 0) {
-              setPositions([positions[positions.length - 1]]);
-            } else {
-              setPositions([]);
-            }
-            console.log('Afertset', positions);
             setStartTime(new Date());
             checkPermission(true);
             setSportsOngoing(true);
