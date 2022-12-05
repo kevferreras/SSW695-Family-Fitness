@@ -64,7 +64,6 @@ const Home = ({navigation}) => {
                     onPress={() => redirectFriends(l)}>
                     {l.name}
                   </Text>{' '}
-                  completed a workout
                 </ListItem.Title>
                 {/* type and duration */}
                 <View style={styles.bottomBox}>
