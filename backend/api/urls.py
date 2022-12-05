@@ -1,7 +1,12 @@
 
 from django.urls import include, re_path, path
 from rest_framework.authtoken.views import obtain_auth_token
-from .views import CreateUserAPIView, LogoutUserAPIView, GetAllFeedsView, CreateWorkoutAPIView
+from .views import CreateUserAPIView, LogoutUserAPIView,\
+    GetAllFeedsView, CreateWorkoutAPIView, api_view
+    #GroupAPIView
+    
+from api import views
+# from api.view import views
 
 
 urlpatterns = [
@@ -18,5 +23,6 @@ urlpatterns = [
     #     GetAllFeedsView.as_view(),
     #     name='home_show_all')
     path('allUserFeeds', GetAllFeedsView.get_workout_list),
-    path('logworkout', CreateWorkoutAPIView.as_view())
+    path('logworkout', CreateWorkoutAPIView.as_view()),
+    path('creategetgroup', views.group_get_post, name = 'groupget&create'),
 ]

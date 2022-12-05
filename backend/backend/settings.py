@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'api.apps.ApiConfig',
+    "rest_framework.generics" # add to resolve the issue in views
 ]
 
 MIDDLEWARE = [
