@@ -38,3 +38,13 @@ class GroupSerializer(serializers.ModelSerializer):
                     'member',
                     'group_description'
                     ]
+
+        def create(self, validated_data):
+            group = WorkoutGroups(
+                name = validated_data["name"],
+                member = validated_data["member"],
+                description = validated_data["description"]
+            )
+
+            group.save()
+            return group
