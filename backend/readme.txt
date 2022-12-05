@@ -12,5 +12,5 @@ curl -X POST -d "name=test&workout_type=test" http://ec2-54-161-61-21.compute-1.
 ec2-54-161-61-21.compute-1.amazonaws.com
 
 creategetgroup route
-curl -X POST -d "name=newGroup&group_description=newgroup created by test1" http://127.0.0.1:8000/api/creategetgroup -H 'Authorization: Token c8dabb9479d655c00ad273fbad410f2e4b4e3270'
+curl -X POST -d "name=newGroup&group_description=newgroup created by test1" http://ec2-54-161-61-21.compute-1.amazonaws.com:8000/api/creategetgroup -H "Authorization: Token ${}"
 
