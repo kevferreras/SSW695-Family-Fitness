@@ -1,5 +1,17 @@
 import axios from 'axios';
 
+axios.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    // console.log('config', config);
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  },
+);
+
 const key1 = 'AIzaSyDlwb3SvLX5B9OoBQWwQx';
 const key2 = 'ckSWP6zzQxuQ';
 const _get = (url, params) => {
@@ -22,6 +34,26 @@ export const registerUser = params => {
 
 export const logout = params => {
   return _post(`${PREFIX}/api/auth/logout/`);
+};
+
+export const homePage = userToken => {
+  return _get(`${PREFIX}/api/allUserFeeds`);
+};
+
+export const logworkout = params => {
+  console.log(
+    'axios.defaults.headers.common.Authorization',
+    axios.defaults.headers.common.Authorization,
+  );
+  return _post(`${PREFIX}/api/logworkout`);
+};
+
+export const createGroup = params => {
+  return _post(`${PREFIX}/api/creategetgroup`, params);
+};
+
+export const getGroupList = () => {
+  return _get(`${PREFIX}/api/creategetgroup`);
 };
 
 export const getGeo = latlng => {

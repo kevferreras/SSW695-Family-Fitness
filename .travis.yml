@@ -1,0 +1,31 @@
+language: python
+
+python:
+- "3.7"
+
+install:
+- python -m pip install Django
+- python -m pip install djangorestframework
+- python -m pip install Pillow
+- python -m pip install python-dateutil
+
+script: 
+- cd backend
+- python manage.py migrate
+- python manage.py test api.tests.test_views
+- python manage.py test api.tests.test_models
+
+# deploy:
+#   provider: elasticbeanstalk
+#   access_key_id:
+#     secure: "Encrypted <access-key-id>=AKIA3ZUGOIBT3KAGISC5"
+#   secret_access_key:
+#     secure: "Encypted <secret-access-key>=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"
+#   region: "us-east-1"
+#   app: "FamFitnessBeanstalk"
+#   env: "Famfitnessbeanstalk-env"
+#   bucket_name: "elasticbeanstalk-us-east-1-810957029479"
+#   skip_cleanup: true
+#   run: python3 manage.py migrate
+#   on:
+#     branch: main
