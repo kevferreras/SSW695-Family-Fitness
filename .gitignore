@@ -136,3 +136,5 @@ dmypy.json
 *.njsproj
 *.sln
 backend/db.sqlite3
+Login and Homepage Diagrams.pptx
+*.xlsx
