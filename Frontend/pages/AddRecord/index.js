@@ -213,6 +213,8 @@ const AddRecord = ({navigation}) => {
             {label: 'Football', value: 'football'},
             {label: 'Baseball', value: 'baseball'},
             {label: 'Hockey', value: 'hockey'},
+            {label: 'Running', value: 'running'},
+            {label: 'Cycling', value: 'cycling'},
           ]}
         />
       </View>

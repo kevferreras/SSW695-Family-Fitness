@@ -45,7 +45,7 @@ export const logworkout = params => {
     'axios.defaults.headers.common.Authorization',
     axios.defaults.headers.common.Authorization,
   );
-  return _post(`${PREFIX}/api/logworkout`);
+  return _post(`${PREFIX}/api/logworkout`, params);
 };
 
 export const createGroup = params => {

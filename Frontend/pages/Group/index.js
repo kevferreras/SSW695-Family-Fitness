@@ -81,7 +81,7 @@ const Group = () => {
           onPress={() => {
             saveGroup();
           }}>
-          Sunbmit
+          Submit
         </Button>
       </Dialog>
     </ScrollView>
