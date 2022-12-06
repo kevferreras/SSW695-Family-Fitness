@@ -206,7 +206,7 @@ const AddRecord = ({navigation}) => {
             setSportsType(value);
           }}
           items={[
-            {label: 'Hockey', value: 'hockey'},
+            {label: 'Hiking', value: 'hiking'},
             {label: 'Running', value: 'running'},
             {label: 'Cycling', value: 'cycling'},
           ]}
