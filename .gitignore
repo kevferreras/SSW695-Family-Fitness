@@ -137,3 +137,5 @@ dmypy.json
 *.sln
 backend/db.sqlite3
 *.sqlite3
+*.xlsx
+*.pptx

@@ -1,25 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState} from 'react';
 import {Text, View, StyleSheet, ScrollView, Platform} from 'react-native';
 import {ListItem, Avatar} from '@rneui/themed';
 import {useTheme} from '@rneui/themed';
 import {SearchBar} from '@rneui/themed';
 import {Icon} from '@rneui/themed';
-import {homePage} from '../../utils/api';
-import {AuthContext} from '../../context/AuthContext';
 
 const Home = ({navigation}) => {
-  const {userToken} = useContext(AuthContext);
   const {theme} = useTheme();
   const [searchWord, setSearchWord] = useState('');
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    homePage(userToken).then(res => {
-      setList(res.data);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   let redirectFriends = l => {
     navigation.navigate('Friends', {title: l.name});
   };
@@ -64,6 +52,7 @@ const Home = ({navigation}) => {
                     onPress={() => redirectFriends(l)}>
                     {l.name}
                   </Text>{' '}
+                  completed a workout
                 </ListItem.Title>
                 {/* type and duration */}
                 <View style={styles.bottomBox}>
@@ -76,9 +65,9 @@ const Home = ({navigation}) => {
                   />
                   <View style={{paddingLeft: 5, paddingRight: 5}}>
                     <Text onPress={() => redirectMap()}>
-                      Workout Type: {l.workout_type}
+                      Workout Type: Running, Lifting
                     </Text>
-                    <Text>Workout duration: {l.workout_duration}</Text>
+                    <Text>Workout duration: In progress</Text>
                   </View>
                 </View>
 
@@ -107,6 +96,65 @@ const Home = ({navigation}) => {
     </ScrollView>
   );
 };
+
+const list = [
+  {
+    name: 'Amy Farha',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice President',
+    tags: [
+      'swimming',
+      'basketball',
+      'swimming',
+      'basketball',
+      'swimming',
+      'basketball',
+    ],
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice Chairman',
+  },
+  {
+    name: 'Amy Farha',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice President',
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice Chairman',
+  },
+  {
+    name: 'Amy Farha',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice President',
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice Chairman',
+  },
+  {
+    name: 'Amy Farha',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice President',
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url:
+      'https://images.pexels.com/photos/746386/pexels-photo-746386.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    subtitle: 'Vice Chairman',
+  },
+];
 
 const styles = StyleSheet.create({
   scrollView: {

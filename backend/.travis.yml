@@ -1,0 +1,15 @@
+language: python
+
+python:
+- "3.7"
+
+install:
+- python -m pip install Django
+- python -m pip install djangorestframework
+- python -m pip install Pillow
+- python -m pip install python-dateutil
+
+script: 
+- cd backend
+- python manage.py test api.tests.test_views
+- python manage.py test api.tests.test_models

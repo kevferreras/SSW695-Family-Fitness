@@ -18,7 +18,7 @@ export const AuthProvider = ({children}) => {
         console.log('token', token);
         setUserToken(token);
         AsyncStorage.setItem('userToken', token);
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        axios.defaults.headers.common.Authoricczation = `Token ${token}`;
         setIsLoading(false);
       })
       .catch(err => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({children}) => {
         console.log('token', token);
         setUserToken(token);
         AsyncStorage.setItem('userToken', token);
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        axios.defaults.headers.common.Authoricczation = `Token ${token}`;
         setIsLoading(false);
       })
       .catch(err => {
@@ -56,11 +56,8 @@ export const AuthProvider = ({children}) => {
     try {
       setIsLoading(true);
       let tmpUserToken = await AsyncStorage.getItem('userToken');
-      if (tmpUserToken) {
-        setUserToken(tmpUserToken);
-        console.log('loginToken', tmpUserToken);
-        axios.defaults.headers.common.Authorization = `Token ${tmpUserToken}`;
-      }
+      setUserToken(tmpUserToken);
+      axios.defaults.headers.common.Authoricczation = `Token ${tmpUserToken}`;
       setIsLoading(false);
     } catch (e) {
       console.log(`isLoggedIn err ${e}`);

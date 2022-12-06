@@ -7,10 +7,16 @@ from django.contrib import admin
 # Create your models here.
 class Account(models.Model):
     user = models.OneToOneField(User, related_name='account', on_delete=models.CASCADE)
+    first_name = models.CharField(max_length = 30)
+    last_name = models.CharField(max_length = 30)
+    email = models.EmailField(max_length = 254, null=True, blank=True)
+    user_name = models.CharField(max_length = 30)
+    password = models.CharField(max_length = 30)
+    last_seen = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
     avatar_img = models.ImageField(blank = True, null = True, upload_to="images", storage = None, width_field=None, height_field=None)
     
     def __str__(self):
-        return self.user
+        return self.first_name + " " + self.last_name
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -21,36 +27,8 @@ class Account(models.Model):
     def save_user_profile(sender, instance, **kwargs):
         instance.account.save()
 
-
-class WorkOuts(models.Model):
-    name = models.CharField('WorkOut Name',max_length=30) # name / description of workout
-    workout_type = models.CharField(max_length=30) # type of sport (running, football, tennis, etc)
-    workout_intensity = models.IntegerField(blank = True, null = True) # intensity of workout (1-5) 5 is highest
-    workout_duration = models.DurationField(blank = True, null = True) 
-    start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
-    total_distance = models.IntegerField(blank = True, null = True) # distance in miles
-    gps_coordinates = models.CharField(max_length=1000, blank = True, null = True) # list of gps coordinates
-    workout_account = models.ForeignKey(User, blank = True, null=True, on_delete = models.SET_NULL) # user account
-    
-    def __str__(self):
-        return self.name
-        
-class WorkoutsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name','workout_type','workout_account')
-
-class WorkoutGroups(models.Model):
-    name = models.CharField('Groups',max_length=30, blank = True) 
-    member = models.ManyToManyField(User, blank = True)
-    member = models.ForeignKey(User, blank = True,null=True, on_delete = models.SET_NULL)
-
-    group_description = models.TextField(blank = True)
-
-    def __str__(self):
-        return self.name
-
 class AccountAdmin(admin.ModelAdmin):
-    list_display = (['user'])
+    list_display = ('user','first_name','last_name')
 
 class Post(models.Model):
     name = models.CharField('Post',max_length=30)
@@ -76,6 +54,44 @@ class Photo(models.Model):
     name = models.CharField('Photo',max_length=30)
     photo_account = models.ForeignKey(Account, blank = True, null=True,on_delete = models.SET_NULL)
     photo = models.ImageField(upload_to="", storage = None, width_field=None, height_field=None)
+
+    def __str__(self):
+        return self.name
+
+class Tags(models.Model):
+    name = models.CharField('Tags',max_length=30)
+    tags_account = models.ManyToManyField(Account)
+    tag_description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class WorkOuts(models.Model):
+    name = models.CharField('WorkOuts',max_length=30)
+    workout_type = models.CharField(max_length=30)
+    workout_category = models.CharField(max_length=30, blank = True, null = True)
+    workout_intensity = models.IntegerField(blank = True, null = True)
+    workout_duration = models.DurationField(blank = True, null = True)
+    start_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    end_time = models.DateTimeField(blank = True, null = True) # YYYY-MM-DD HH:MM
+    total_distance = models.IntegerField(blank = True, null = True)
+    gps_coordinates = models.CharField(max_length=30,blank = True, null = True)
+    workout_account = models.ForeignKey(User, blank = True, null=True, on_delete = models.SET_NULL)
+    workout_tags = models.ManyToManyField(Tags, blank = True)
+
+    def __str__(self):
+        return self.name
+        
+class WorkoutsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name','workout_type','workout_account')
+
+
+class Groups(models.Model):
+    name = models.CharField('Groups',max_length=30)
+    member = models.ManyToManyField(Account)
+    group_description = models.TextField(blank = True)
+    #member = models.ForeignKey(Account, blank = True, null=True, on_delete = models.SET_NULL)
+    group_tags = models.ManyToManyField(Tags)
 
     def __str__(self):
         return self.name

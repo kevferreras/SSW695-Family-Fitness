@@ -1,67 +1,39 @@
-import React, {useEffect, useState, useRef, useContext} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Text,
   StyleSheet,
   View,
   PermissionsAndroid,
   Platform,
-  Alert,
 } from 'react-native';
 import Toast from 'react-native-root-toast';
 import Geolocation from 'react-native-geolocation-service';
 import {getGeo} from '../../utils/api';
 import {Icon, Button} from '@rneui/themed';
 import RNPickerSelect from 'react-native-picker-select';
-import {logworkout} from '../../utils/api';
-import {CoolWPDistance, formatDate} from '../../utils/utils';
 
 const AddRecord = ({navigation}) => {
-  const [sportsType, setSportsType] = useState('');
-  const [startTime, setStartTime] = useState('');
+  const [location, setLocation] = useState([]);
   const [address, setAddress] = useState('');
-  const [sportsOngoing, setSportsOngoing] = useState(false);
-  const [positions, setPositions] = useState([]);
-  const [intervalId, setIntervalId] = useState(null);
+  const [timer, setTimer] = useState(null);
   let redirectMap = l => {
-    clearInterval(intervalId);
-    setIntervalId(null);
-    // return;
-    navigation.navigate('Map', {positions});
-    sendLogWorkOut();
-    setSportsOngoing(false);
+    navigation.navigate('Map');
   };
+
+  // request location every 5 seconds
   useEffect(() => {
-    checkPermission();
-    checkPermission(true);
+    clearInterval(timer);
+    setTimer(
+      setInterval(() => {
+        console.log('timer');
+        checkPermission();
+      }, 5000),
+    );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let sendLogWorkOut = () => {
-    let endTime = new Date();
-    const params = {
-      name: sportsType + 'Workout',
-      workout_type: sportsType,
-      workout_intensity: '1',
-      workout_duration: (endTime.getTime() - startTime.getTime()) / 1000,
-      start_time: formatDate(startTime, 'yyyy-MM-dd hh:mm'),
-      end_time: formatDate(endTime, 'yyyy-MM-dd hh:mm'),
-      total_distance:
-        positions.length < 1
-          ? 0
-          : CoolWPDistance(
-              positions[0].latitude,
-              positions[0].longitude,
-              positions[positions.length - 1].latitude,
-              positions[positions.length - 1].longitude,
-            ),
-      gps_coordinates: JSON.stringify(positions),
-    };
-    console.log('sendLogWorkOut', params);
-    logworkout(params).catch(err => {
-      console.log('logworkoutError', err);
-    });
-  };
-  let checkPermission = async (getCurr = false) => {
+  let checkPermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -73,13 +45,9 @@ const AddRecord = ({navigation}) => {
           buttonPositive: 'OK',
         },
       );
-      // console.log('granted', granted);
+      console.log('granted', granted);
       if (granted === 'granted') {
-        if (getCurr) {
-          getRealLocation();
-        } else {
-          getLocation();
-        }
+        getLocation();
         // return true;
       } else {
         Toast.show('Location Service not enabled', {
@@ -93,73 +61,20 @@ const AddRecord = ({navigation}) => {
       });
     }
   };
-  let getRealLocation = () => {
+
+  let getLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
-        const tmpPositions = [
-          {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          },
-        ];
-        setPositions(() => [
-          {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          },
-        ]);
-        console.log('getRealLocation=>tmpPositions', tmpPositions);
+        console.log(position);
+        setLocation(position.coords);
         getAddress(position.coords);
       },
       error => {
         // See error code charts below.
         console.log(error.code, error.message);
+        setLocation(false);
       },
-      {
-        maximumAge: 0,
-        timeout: 5000,
-        enableHighAccuracy: true,
-      },
-    );
-  };
-  let getLocation = () => {
-    Geolocation.watchPosition(
-      position => {
-        console.log('tmpPositionsBefore, ', positions);
-        // const tmpPositions = [
-        //   ...positions,
-        //   {
-        //     latitude: position.coords.latitude,
-        //     longitude: position.coords.longitude,
-        //     latitudeDelta: 0.01,
-        //     longitudeDelta: 0.01,
-        //   },
-        // ];
-        // console.log('tmpPositions', tmpPositions);
-        setPositions(prevPositions => [
-          ...prevPositions,
-          {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          },
-        ]);
-        getAddress(position.coords);
-      },
-      error => {
-        // See error code charts below.
-        console.log(error.code, error.message);
-      },
-      {
-        maximumAge: 0,
-        timeout: 5000,
-        enableHighAccuracy: true,
-      },
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
     );
   };
 
@@ -173,6 +88,7 @@ const AddRecord = ({navigation}) => {
         console.log('err', err);
       });
   };
+
   return (
     <View style={{padding: 20}}>
       <Text style={styles.titleText}>Address</Text>
@@ -185,7 +101,7 @@ const AddRecord = ({navigation}) => {
         <Text>{address}</Text>
         <Icon
           onPress={() => {
-            // checkPermission();
+            checkPermission();
           }}
           type="ionicon"
           name="ios-locate"
@@ -206,9 +122,7 @@ const AddRecord = ({navigation}) => {
               ? pickerSelectStyles.inputIOS
               : pickerSelectStyles.inputAndroid
           }
-          onValueChange={value => {
-            setSportsType(value);
-          }}
+          onValueChange={value => console.log(value)}
           items={[
             {label: 'Football', value: 'football'},
             {label: 'Baseball', value: 'baseball'},
@@ -217,27 +131,7 @@ const AddRecord = ({navigation}) => {
         />
       </View>
       {/* start exercise */}
-      {sportsOngoing ? (
-        <Button
-          title="End"
-          onPress={() => {
-            redirectMap();
-          }}
-        />
-      ) : (
-        <Button
-          title="Start"
-          onPress={() => {
-            if (sportsType == '') {
-              Alert.alert('select a sport');
-              return;
-            }
-            setStartTime(new Date());
-            checkPermission(true);
-            setSportsOngoing(true);
-          }}
-        />
-      )}
+      <Button title="Start" onPress={() => redirectMap()} />
     </View>
   );
 };
