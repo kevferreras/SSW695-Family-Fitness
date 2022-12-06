@@ -48,18 +48,24 @@ const AddRecord = ({navigation}) => {
       total_distance:
         positions.length < 1
           ? 0
-          : CoolWPDistance(
-              positions[0].latitude,
-              positions[0].longitude,
-              positions[positions.length - 1].latitude,
-              positions[positions.length - 1].longitude,
+          : Math.floor(
+              CoolWPDistance(
+                positions[0].latitude,
+                positions[0].longitude,
+                positions[positions.length - 1].latitude,
+                positions[positions.length - 1].longitude,
+              ),
             ),
       gps_coordinates: JSON.stringify(positions),
     };
     console.log('sendLogWorkOut', params);
-    logworkout(params).catch(err => {
-      console.log('logworkoutError', err);
-    });
+    logworkout(params)
+      .then(res => {
+        console.log('logworkoutSuccess', res);
+      })
+      .catch(err => {
+        console.log('logworkoutError', err);
+      });
   };
   let checkPermission = async (getCurr = false) => {
     try {
@@ -130,16 +136,6 @@ const AddRecord = ({navigation}) => {
     Geolocation.watchPosition(
       position => {
         console.log('tmpPositionsBefore, ', positions);
-        // const tmpPositions = [
-        //   ...positions,
-        //   {
-        //     latitude: position.coords.latitude,
-        //     longitude: position.coords.longitude,
-        //     latitudeDelta: 0.01,
-        //     longitudeDelta: 0.01,
-        //   },
-        // ];
-        // console.log('tmpPositions', tmpPositions);
         setPositions(prevPositions => [
           ...prevPositions,
           {
@@ -210,8 +206,6 @@ const AddRecord = ({navigation}) => {
             setSportsType(value);
           }}
           items={[
-            {label: 'Football', value: 'football'},
-            {label: 'Baseball', value: 'baseball'},
             {label: 'Hockey', value: 'hockey'},
             {label: 'Running', value: 'running'},
             {label: 'Cycling', value: 'cycling'},
